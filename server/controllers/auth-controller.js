@@ -23,7 +23,7 @@ const register = async (req, res) => {
         // const saltRound = 10;
         // const hash_password = await bcrypt.hash(password,saltRound);
         const userCreated = await User.create({ username, email, phone, password });
-        return res.status(200).json({ messgae: "User created successfully ", data: userCreated })
+        return res.status(200).json({ message: "User created successfully ", data: userCreated,token:await userCreated.generateToken(),userId:userCreated._id.toString() })
 
 
 
