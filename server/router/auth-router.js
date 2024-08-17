@@ -5,6 +5,6 @@ const authControllers = require("../controllers/auth-controller")
 //     res.status(200).send('Welcome to MERN 2024 tutorial using router')
 // })
 router.route('/').get(authControllers.home);
-router.route('/register').get(authControllers.register);
+router.route('/register').post(authControllers.register);
 
 module.exports = router;

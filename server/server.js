@@ -1,16 +1,14 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const router = require('./router/auth-router')
+const PORT = 5000;
+app.use(express.json());
+const connectDb = require('./utils/db');
 
 app.use('/api/auth/', router)
-
-app.get('/', (req, res) => {
-    res.status(200).send('Welcome to MERN 2024 tutorial')
-})
-app.get('/register', (req, res) => {
-    res.status(200).send('Welcome to registration page')
-})
-const PORT = 5000;
-app.listen(PORT, () => {
+connectDb().then(()=>{
+    app.listen(PORT, () => {
     console.log(`Server is running at port:${PORT}`)
 })
+});
