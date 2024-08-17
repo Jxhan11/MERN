@@ -34,4 +34,29 @@ const register = async (req, res) => {
   }
 };
 
-module.exports = { home, register };
+//Login function
+const login = async (req,res)=>{
+    try {
+        const{email,password} = req.body
+        const userExist = await User.findOne({email})
+        if (!userExist){
+            return res.status(400).json("Invalid Credentials or Please Register for an account first")
+        }
+        const user = await bcrypt.compare(password,userExist.password)
+        if (user){
+            return res.status(200).json({
+                msg:"logged in successfully",
+                token:await userExist.generateToken(),
+                userId:userExist._id.toString()
+            })
+        }else{
+            return res.status(401).json("Invalid Credentials")
+        }
+    } catch (error) {
+        res.status(500).json('Internal Server Error')
+        console.error(error);
+
+    }
+}
+
+module.exports = { home, register,login };
