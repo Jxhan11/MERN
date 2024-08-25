@@ -7,9 +7,19 @@ const PORT = 5000;
 app.use(express.json());
 const connectDb = require("./utils/db");
 const errorMiddleware = require("./middlewares/error-middleware");
+const allowedOrigins = [
+    "https://bajaj-test-nine.vercel.app", // Add your frontend URL here
+    "http://localhost:3000", // Allow localhost for development
+];
 app.use(
     cors({
-        origin: "http://localhost:5000", // Adjust this to your React app's URL
+        origin: function (origin, callback) {
+            if (!origin || allowedOrigins.includes(origin)) {
+                callback(null, true); // Allow the origin
+            } else {
+                callback(new Error("Not allowed by CORS")); // Reject the origin
+            }
+        },
         methods: ["GET", "POST"],
         allowedHeaders: ["Content-Type"],
     })
